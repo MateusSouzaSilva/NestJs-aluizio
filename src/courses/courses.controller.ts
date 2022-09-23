@@ -1,11 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
-import { CourseService } from './courses.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { CoursesService } from './courses.service';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('courses')
 export class CoursesController {
 
-    constructor(private readonly coursesService: CourseService) {}
+    constructor(private readonly coursesService: CoursesService) {}
 
     @Get()
     buscaTodos() {
@@ -18,13 +20,13 @@ export class CoursesController {
     }
 
     @Post()
-    criar(@Body() body) {
-        return this.coursesService.cria(body);
+    criar(@Body() createCourseDto: CreateCourseDto) {
+        return this.coursesService.cria(createCourseDto);
     }
 
     @Patch(':id')
-    atualiza(@Param('id') id: string, @Body() body) {
-        return this.coursesService.atualiza(id, body);
+    atualiza(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+        return this.coursesService.atualiza(id, updateCourseDto);
     }
     
     @Delete(':id')

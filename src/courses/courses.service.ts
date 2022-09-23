@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Course } from './entities/course.entity';
 
 @Injectable()
-export class CourseService {
+export class CoursesService {
     private courses: Course[] = [
         {
             id:1,
@@ -18,11 +18,22 @@ export class CourseService {
     }
 
     buscaUm(id: string) {
-        return this.courses.find((course: Course) => course.id === Number(id));
+        const course = this.courses.find(
+            (course: Course) => course.id === Number(id));
+    
+        if(!course) {
+            throw new HttpException(
+                `Course ID ${id} not found`,
+                HttpStatus.NOT_FOUND
+            );
+        }
+
+        return course;
     }
 
     cria(createCourseDto: any) {
         this.courses.push(createCourseDto);
+        return createCourseDto;
     }
 
     atualiza(id: string, updateCourseDto: any) {
